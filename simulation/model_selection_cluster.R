@@ -1390,7 +1390,4 @@ for(i in 1:n_setting){
   }
 }
 
-rm(rate_log)
-rm(event)
-rm(transaction)
 save.image(paste0("model_selection_cluster_",id,".RData"))
