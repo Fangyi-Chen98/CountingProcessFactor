@@ -3,7 +3,7 @@ library(pracma)
 library(GPArotation)
 library(MASS)
 load("~/Desktop/code_new/data_result.RData")
-load("~/Desktop/data_analysis_new_3.RData")
+load("~/Desktop/data_analysis_new.RData")
 K <- 3
 grid <- 51
 
@@ -27,9 +27,6 @@ d <- eigen(t(Rate_left_sum)%*%Rate_left_sum)
 R <- d$vectors %*% diag((d$values)^(1/2)) %*% t(d$vectors)
 
 A <- t(R %*% Rate_right)
-# anchor <- c(743,1863,2113)
-# rot <- solve(Rate_right[,anchor])
-# rate_right_rotated <- t(rot %*% Rate_right)
 B <- varimax(A, normalize = T)
 
 rate_right_rotated <- B$loadings
@@ -85,7 +82,6 @@ individual_info <- individual_info[,c("AGE_DESC", "INCOME_DESC", "HOUSEHOLD_SIZE
 individual_info$KID_CATEGORY_DESC[individual_info$KID_CATEGORY_DESC==1] <- 0
 individual_info$KID_CATEGORY_DESC[individual_info$KID_CATEGORY_DESC>1] <- 1
 individual_info$AGE_DESC[individual_info$AGE_DESC <= 4] <- 0
-# individual_info$AGE_DESC[individual_info$AGE_DESC <= 4&individual_info$AGE_DESC >0] <- 1
 individual_info$AGE_DESC[individual_info$AGE_DESC > 1] <- 1
 individual_info$INCOME_DESC[individual_info$INCOME_DESC <= 3] <- 0
 individual_info$INCOME_DESC[individual_info$INCOME_DESC <= 5&individual_info$INCOME_DESC > 0] <- 1
@@ -101,13 +97,6 @@ for(i in 1:nrow(individual_info)){
     individual_info[i,(j+3)] <- mean(rate_left_rotated[,flag[i],j])
   }
 }
-
-# par(mfrow = c(3, 3))
-# for(j in 4:6){
-#   for(i in 1:3){
-#     plot(individual_info[,j]~individual_info[,i],cex=0.2)
-#   }
-# }
 
 cov_matrix <- matrix(0, 6, 6)
 cov_test <- matrix(0, 6, 6)
@@ -167,31 +156,14 @@ barplot(fluc_1$quant_1,names.arg = fluc_1$type, cex.axis = 2, cex.main = 2, cex.
 barplot(fluc_2$quant_2,names.arg = fluc_2$type, cex.axis = 2, cex.main = 2, cex.names = 1.5, las = 2, main = "Median")
 barplot(fluc_3$quant_3,names.arg = fluc_3$type, cex.axis = 2, cex.main = 2, cex.names = 1.5, las = 2, main = "Third Quatile")
 
-# a_1=lm(factor_1~1,data=individual_info)
-# stepAIC(a_1,direction = "forward", scope = list(lower=a_1, upper=~factor(AGE_DESC)+factor(INCOME_DESC)+KID_CATEGORY_DESC+factor(INCOME_DESC*KID_CATEGORY_DESC)+factor(AGE_DESC*KID_CATEGORY_DESC)+factor(INCOME_DESC*AGE_DESC) ))
-# a_1_step = lm(factor_1~1+factor(INCOME_DESC)+KID_CATEGORY_DESC+factor(INCOME_DESC*KID_CATEGORY_DESC),data=individual_info)
-# summary(a_1_step)
-# 
-# a_1 = lm(factor_1~factor(AGE_DESC)+factor(INCOME_DESC)+KID_CATEGORY_DESC+factor(INCOME_DESC*KID_CATEGORY_DESC)+factor(AGE_DESC*KID_CATEGORY_DESC)+factor(INCOME_DESC*AGE_DESC),data=individual_info)
-# 
-# a_2=lm(factor_2~1,data=individual_info)
-# stepAIC(a_2,direction = "forward", scope = list(lower=a_2, upper=~factor(AGE_DESC)+factor(INCOME_DESC)+KID_CATEGORY_DESC+factor(INCOME_DESC*KID_CATEGORY_DESC)+factor(AGE_DESC*KID_CATEGORY_DESC)+factor(INCOME_DESC*AGE_DESC) ))
-# a_2_step = lm(factor_2~1+factor(AGE_DESC)+factor(INCOME_DESC)+KID_CATEGORY_DESC,data=individual_info)
-# summary(a_2_step)
-# 
-# a_3=lm(factor_3~1,data=individual_info)
-# stepAIC(a_3,direction = "forward", scope = list(lower=a_3, upper=~factor(AGE_DESC)+factor(INCOME_DESC)+KID_CATEGORY_DESC+factor(INCOME_DESC*KID_CATEGORY_DESC)+factor(AGE_DESC*KID_CATEGORY_DESC)+factor(INCOME_DESC*AGE_DESC) ))
-# a_3_step = lm(factor_3~1+factor(AGE_DESC),data=individual_info)
-# summary(a_3_step)
-
-a_1 = lm(factor_1 ~ AGE_DESC+factor(INCOME_DESC)+KID_CATEGORY_DESC1+
+lm_1 = lm(factor_1 ~ AGE_DESC+factor(INCOME_DESC)+KID_CATEGORY_DESC1+
          +factor(INCOME_DESC*KID_CATEGORY_DESC), data=individual_info)
-summary(a_1)
+summary(lm_1)
 
-a_2 = lm(factor_2 ~ AGE_DESC+factor(INCOME_DESC)+KID_CATEGORY_DESC
+lm_2 = lm(factor_2 ~ AGE_DESC+factor(INCOME_DESC)+KID_CATEGORY_DESC
          +factor(INCOME_DESC*KID_CATEGORY_DESC), data=individual_info)
-summary(a_2)
+summary(lm_2)
 
-a_3 = lm(factor_3 ~ AGE_DESC+factor(INCOME_DESC)+KID_CATEGORY_DESC
+lm_3 = lm(factor_3 ~ AGE_DESC+factor(INCOME_DESC)+KID_CATEGORY_DESC
          +factor(INCOME_DESC*KID_CATEGORY_DESC), data=individual_info)
-summary(a_3)
+summary(lm_3)
