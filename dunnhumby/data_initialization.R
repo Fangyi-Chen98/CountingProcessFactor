@@ -83,13 +83,5 @@ for(k in 1:K_max){
   }
 }
 
-rm(count)
-rm(count_event)
-rm(d)
-rm(rate_int)
-rm(rate_int_svd)
-rm(rate_left)
-rm(rate)
-rm(product_number)
 setwd("~/Desktop/")
 save.image("code_new/initialization_new.RData")
