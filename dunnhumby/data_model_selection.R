@@ -40,6 +40,4 @@ if(K > 1){
   Rate_right <- rate_log_right
 }
 Log_lik_int_ker <- result[[grid_num + 3]]
-rm(result)
-print(Log_lik_int_ker)
 save.image(paste0("data_analysis_new_",as.character(K),".RData"))
