@@ -1207,7 +1207,4 @@ for(i in 1:n_setting){
   }
 }
 
-rm(rate_log)
-rm(event)
-rm(transaction)
 save.image(paste0("model_selection_",as.character(id),".RData"))
